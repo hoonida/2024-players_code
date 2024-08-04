@@ -1,4 +1,4 @@
-from gpiozero import MCP3008
+from git import MCP3008
 import liblo as OSC
 import sys
 
