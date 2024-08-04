@@ -14,8 +14,8 @@ class Encoder:
         self.callback = callback
         GPIO.setup(self.leftPin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         GPIO.setup(self.rightPin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-        GPIO.add_event_detect(self.leftPin, GPIO.BOTH, callback=self.transitionOccurred)  
-        GPIO.add_event_detect(self.rightPin, GPIO.BOTH, callback=self.transitionOccurred)  
+        GPIO.add_event_detect(self.leftPin, GPIO.BOTH, callback=self.transitionOccurred)
+        GPIO.add_event_detect(self.rightPin, GPIO.BOTH, callback=self.transitionOccurred)
 
     def transitionOccurred(self, channel):
         p1 = GPIO.input(self.leftPin)
@@ -72,11 +72,14 @@ GPIO.setmode(GPIO.BCM)
 
 # 엔코더 콜백 함수
 def valueChanged(value, direction):
+
+    value = (value % 51)
+    
     # 출력: 새 값과 방향
     print("* 새 값: {}, 방향: {}".format(value, direction))
 
     # 오실레이터 주파수를 업데이트하기 위해 OSC 메시지 전송
-    OSC.send(target, "/rnbo/inst/0/params/oscillator_frequency/normalized", value)
+    OSC.send(target, "/rnbo/inst/0/params/oscillator_frequency/normalized", value/50.0)
     
 
 # OSC 주소 생성 함수
@@ -92,7 +95,7 @@ def send_initial_osc_message(target):
     OSC.send(target, "/rnbo/jack/transport/rolling", 1)
 
 # 엔코더 인스턴스 생성
-e1 = Encoder(26, 19, valueChanged)
+e1 = Encoder(26, 13, valueChanged)
 
 # OSC 타겟 생성
 target = create_osc_address(1234)
@@ -107,7 +110,7 @@ try:
         
 
         # 현재 값을 출력
-        print("현재 값은: {}".format(current_value))
+        #print("현재 값은: {}".format(current_value))
         
         # 일시 정지
         time.sleep(0.5)
