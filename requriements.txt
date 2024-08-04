@@ -1,0 +1,5 @@
+adafruit-python-shell
+Cython==0.29.36
+pyliblo3==0.12.0
+RPi.GPIO==0.7.1
+gpiozero
