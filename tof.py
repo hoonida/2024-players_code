@@ -55,10 +55,11 @@ def main():
 
     # ToF 값 읽고 OSC 메시지 전송 반복
     while True:
-        distance = tof.get_distance()
+        distance_in_mm = tof.get_distance()
+        distance_in_mm = min(distance_in_mm, 2000) / 2000
         
-        print("Distance = %d mm" % distance)
-        OSC.send(osc_target, "/rnbo/inst/0/params/oscillator_frequency/normalized", distance/1000)
+        print(f"Distance: {distance_in_mm} mm")
+        OSC.send(osc_target, "/rnbo/inst/0/params/vl53l1x_tof/normalized", distance_in_mm)
     
         time.sleep(0.5)
 
