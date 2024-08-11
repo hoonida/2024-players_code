@@ -3,7 +3,8 @@ import liblo as OSC
 import time, sys
 
  
-class McpEx:
+class MCP3008:
+    
     def __init__(self, bus=0, device=0):
         self.spi = spidev.SpiDev()
         self.spi.open(bus, device)
@@ -19,7 +20,7 @@ class McpEx:
 
 def main():
      
-    mcp = McpEx()
+    mcp = MCP3008()
 
     # OSC 통신 초기화
     port = 1234
@@ -34,12 +35,14 @@ def main():
 
     # ADC 값 읽고 OSC 메시지 전송 반복
     while True:
-        adc = mcp.analog_read(0)
-        voltage = adc*5/1023
-        print("ADC = %s(%d) Voltage = %.3fV" % (hex(adc), adc, voltage))
-        OSC.send(osc_target, "/rnbo/inst/0/params/oscillator_frequency/normalized", voltage)
+        adc_6 = mcp.analog_read(6) / 1023
+        adc_7 = mcp.analog_read(7) / 1023
+
+        print(f"ADC 6: {adc_6}, ADC 7: {adc_7}")
+        OSC.send(osc_target, "/rnbo/inst/0/params/mcp3008_ch6/normalized", adc_6)
+        OSC.send(osc_target, "/rnbo/inst/0/params/mcp3008_ch7/normalized", adc_7)
     
-        time.sleep(0.5)
+        time.sleep(0.1)
 
 
 if __name__ == '__main__':
