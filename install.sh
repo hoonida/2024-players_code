@@ -3,8 +3,8 @@ sudo apt-get -y install git python3-pip liblo-dev spidev i2c-tools
 sudo apt-get -y install libopenblas-dev # for numpy
 sudo apt-get -y install libopenjp2-7 # for PIL
 
-sudo apt remove python3-rpi.gpio
-sudo apt install python3-rpi-lgpio
+sudo apt -y remove python3-rpi.gpio
+sudo apt -y install python3-rpi-lgpio
 
 pip install -r requirements.txt --break-system-packages
 
