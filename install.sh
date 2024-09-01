@@ -11,3 +11,6 @@ pip install -r requirements.txt --break-system-packages
 # Setup I2C
 sudo raspi-config nonint do_i2c 0
 sudo i2cdetect -y 1
+
+# Setup SPI
+sudo raspi-config nonint do_spi 0
