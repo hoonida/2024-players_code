@@ -3,6 +3,7 @@ Cython==0.29.36
 pyliblo3==0.12.0
 RPi.GPIO==0.7.1
 gpiozero
-vl53l1x
+vl53l5cx-ctypes
+numpy==1.26.4
 Pillow
 Adafruit-SSD1306
