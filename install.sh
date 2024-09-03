@@ -1,5 +1,8 @@
+sudo dpkg --configure -a
+sudo apt -y autoremove
+
 sudo apt-get -y update
-sudo apt-get -y install git python3-pip liblo-dev spidev i2c-tools
+sudo apt-get -y install git python3-pip liblo-dev
 sudo apt-get -y install libopenblas-dev # for numpy
 sudo apt-get -y install libopenjp2-7 # for PIL
 
@@ -9,8 +12,10 @@ sudo apt -y install python3-rpi-lgpio
 pip install -r requirements.txt --break-system-packages
 
 # Setup I2C
+sudo apt -y install i2c-tools
 sudo raspi-config nonint do_i2c 0
 sudo i2cdetect -y 1
 
 # Setup SPI
+sudo apt -y install spidev
 sudo raspi-config nonint do_spi 0
