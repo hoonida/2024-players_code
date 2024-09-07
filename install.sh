@@ -8,7 +8,7 @@ sudo apt install python3-rpi-lgpio
 sudo apt-get -y liblo-dev
 
 # Setup SPI & I2C
-sudo apt-get -y install spidev i2c-tools
+sudo apt-get -y install i2c-tools
 sudo raspi-config nonint do_i2c 0
 sudo raspi-config nonint do_spi 0
 sudo i2cdetect -y 1
@@ -16,4 +16,4 @@ sudo i2cdetect -y 1
 # Setup Python
 sudo apt-get -y install libopenblas-dev # for numpy
 sudo apt-get -y install libopenjp2-7 # for PIL
-sudo pip install -r requirements.txt --break-system-packages
+pip install -r requirements.txt --break-system-packages
