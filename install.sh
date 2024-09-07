@@ -1,21 +1,19 @@
-sudo dpkg --configure -a
-sudo apt -y autoremove
+# Setup Basic Environment
+sudo apt-get -y update python3-pip
+sudo apt-get -y install git
 
-sudo apt-get -y update
-sudo apt-get -y install git python3-pip liblo-dev
-sudo apt-get -y install libopenblas-dev # for numpy
-sudo apt-get -y install libopenjp2-7 # for PIL
+# Setup GPIO
+sudo apt remove python3-rpi.gpio
+sudo apt install python3-rpi-lgpio
+sudo apt-get -y liblo-dev
 
-sudo apt -y remove python3-rpi.gpio
-sudo apt -y install python3-rpi-lgpio
-
-pip install -r requirements.txt --break-system-packages
-
-# Setup I2C
-sudo apt -y install i2c-tools
+# Setup SPI & I2C
+sudo apt-get -y install spidev i2c-tools
 sudo raspi-config nonint do_i2c 0
+sudo raspi-config nonint do_spi 0
 sudo i2cdetect -y 1
 
-# Setup SPI
-sudo apt -y install spidev
-sudo raspi-config nonint do_spi 0
+# Setup Python
+sudo apt-get -y install libopenblas-dev # for numpy
+sudo apt-get -y install libopenjp2-7 # for PIL
+sudo pip install -r requirements.txt --break-system-packages

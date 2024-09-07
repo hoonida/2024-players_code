@@ -5,5 +5,6 @@ RPi.GPIO==0.7.1
 gpiozero
 vl53l5cx-ctypes
 numpy==1.26.4
-Pillow
+pillow==9.1.0
+Adafruit_GPIO
 Adafruit-SSD1306
