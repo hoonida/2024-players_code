@@ -1,4 +1,6 @@
 import time
+import sys
+import liblo as OSC
 
 import Adafruit_GPIO.SPI as SPI
 import Adafruit_SSD1306
@@ -42,20 +44,69 @@ bottom = height-padding
 x = 0
 
 
-# Load default font.
-font = ImageFont.load_default()
-
 # Alternatively load a TTF font.  Make sure the .ttf font file is in the same directory as the python script!
 # Some other nice fonts to try: http://www.dafont.com/bitmap.php
+font = ImageFont.load_default()
 # font = ImageFont.truetype('Minecraftia.ttf', 8)
 
+
+display_text = {
+    0: "Eulji-ro 15-gil, Jung-gu, Seoul",
+    1: "Eulji-ro, Jung-gu, Seoul",
+    2: "Changgyeonggung-ro 5na-gil, Jung-gu, Seoul",
+    3: "Changgyeonggung-ro 5-gil, Jung-gu, Seoul",
+}
+
+def handle_step(path, args):
+    i = args[0]
+    global display_text
+    print("current step:", i)
+
+    # Draw a black filled box to clear the image.
+    draw.rectangle((0,0,width,height), outline=0, fill=0)
+
+    draw.text((x, top), display_text[i],  font=font, fill=255)
+    # draw.text((x, top+8), f"HOONIDA",  font=font, fill=255)
+
+    # Display image.
+    disp.image(image)
+    disp.display()
+
+    #led_vals = [0] * len(leds)
+    #led_vals[i] = 1
+    #leds.value = tuple(led_vals)
+
+# set up OSC client - send all messages to port 1234 on the local machine (rnbo>
+try:
+    target = OSC.Address(1234)
+except OSC.AddressError as err:
+    print(err)
+    sys.exit()# set up OSC server - listening on port 4321
+
+try:
+    server = OSC.Server(4321)
+except OSC.ServerError as err:
+    print(err)
+
+server.add_method("/rnbo/inst/0/messages/out/oled_step", 'i', handle_step)
+
+# Set up RNBO OSC listener
+OSC.send(target, "/rnbo/listeners/add", f"127.0.0.1:4321")
+
+
+
+
 while True:
+
+    server.recv(100)
+
+    continue
 
     # Draw a black filled box to clear the image.
     draw.rectangle((0,0,width,height), outline=0, fill=0)
 
     draw.text((x, top), f"HELLO WORLD! HOONIDA",  font=font, fill=255)
-    draw.text((x, top+8), f"HOONIDA",  font=font, fill=255)
+    # draw.text((x, top+8), f"HOONIDA",  font=font, fill=255)
 
     # Display image.
     disp.image(image)
