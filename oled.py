@@ -51,10 +51,11 @@ font = ImageFont.load_default()
 
 
 display_text = {
-    0: "Eulji-ro 15-gil, Jung-gu, Seoul",
-    1: "Eulji-ro, Jung-gu, Seoul",
-    2: "Changgyeonggung-ro 5na-gil, Jung-gu, Seoul",
-    3: "Changgyeonggung-ro 5-gil, Jung-gu, Seoul",
+    0: "",
+    1: "Eulji-ro 15-gil, Jung-gu, Seoul",
+    2: "Eulji-ro, Jung-gu, Seoul",
+    3: "Changgyeonggung-ro 5na-gil, Jung-gu, Seoul",
+    4: "Changgyeonggung-ro 5-gil, Jung-gu, Seoul",
 }
 
 def handle_step(path, args):
