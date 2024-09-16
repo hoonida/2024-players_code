@@ -1,5 +1,4 @@
-# systemctl --user daemon-reload
-# systemctl --user reenable hello.service
-# systemctl --user restart hello.service
-
-systemctl --user status oled.service
+systemctl status adc.service
+systemctl status encoder.service
+systemctl status oled.service
+systemctl status tof.service
