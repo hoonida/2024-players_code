@@ -9,6 +9,8 @@ from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
 
+import graphic
+
 
 def get_ip():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -49,18 +51,11 @@ def main():
     # Some other nice fonts to try: http://www.dafont.com/bitmap.php
     font = ImageFont.truetype('DungGeunMo.ttf', 18)
     text = f"서울특별시 영등포구 당산로 10"
-    text = text + "      " + text[:6]
 
     y_offset = 10
     x_offset = 0
 
-    def get_text_size(font, text):
-        text += "    "
-        text_width, _ = font.getsize(text)
-        text += text
-        return text, text_width
-
-    text, max_offset = get_text_size(font, text)
+    textline = graphic.TextLine(screen_size, text, font)
 
 
     def terminate_callback():
@@ -83,15 +78,13 @@ def main():
         # Draw a black filled box to clear the image.
         draw.rectangle((0, 0, *screen_size), outline=0, fill=0)
 
-        draw.text((x_offset, y_offset), text,  font=font, fill=255)
+        textline.draw(draw, x_offset, y_offset)
+        textline.shift(2)
 
         # Display image.
         disp.image(image)
         disp.display()
 
-        x_offset -= 2
-        if x_offset < -max_offset:
-            x_offset = 0
 
 
 if __name__ == '__main__':
