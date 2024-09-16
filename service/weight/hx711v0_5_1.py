@@ -21,6 +21,8 @@ class HX711:
         self.REFERENCE_UNIT_A = 114
         self.OFFSET_A = np.zeros((self.channels, 1))
 
+        self.old_weights = np.zeros(self.channels)
+
         # Think about whether this is necessary.
         time.sleep(1)
 
@@ -87,12 +89,18 @@ class HX711:
         # Return the sample value we've read from the HX711.
         return signed_int_value
 
-    def getWeight(self, channel='A'):
+    def getWeight(self):
         rawBytes = self.readRawBytes()
         longWithOffset = self.rawBytesToLong(rawBytes) - self.OFFSET_A
         return longWithOffset[:,0] / self.REFERENCE_UNIT_A
 
-    def autosetOffset(self, channel='A'):        
+    def getWeightFiltered(self):
+        new_weights = self.getWeight()
+        self.old_weights = self.old_weights * 0.7 + new_weights * 0.3
+        return self.old_weights
+
+
+    def autosetOffset(self):        
         newOffsetValue = np.zeros((self.channels, 1))
         for i in range(10):
             rawBytes = self.readRawBytes()

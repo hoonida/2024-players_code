@@ -21,7 +21,7 @@ hx.autosetOffset()
 
 while True:
     try:
-        weightValues = hx.getWeight()
+        weightValues = hx.getWeightFiltered()
 
         print(f"weight (grams): {weightValues}")
         for i, weightValue in enumerate(weightValues):
