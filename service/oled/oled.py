@@ -1,6 +1,7 @@
 import os
 import atexit
 import time
+import socket
 import logging
 
 import Adafruit_SSD1306
@@ -10,12 +11,11 @@ from PIL import ImageFont
 
 
 def get_ip():
-    import socket
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect(("8.8.8.8", 80))
-    ip_text = s.getsockname()[0]
+    ip = s.getsockname()[0]
     s.close()
-    return ip_text
+    return ip, socket.gethostname()
 
 
 def main():
@@ -65,17 +65,18 @@ def main():
 
     def terminate_callback():
         draw.rectangle((0, 0, *screen_size), outline=0, fill=0)
-        draw.text((0, 0), 'BYE!',  font=font, fill=255)
+        # draw.text((0, 0), 'BYE!',  font=font, fill=255)
         disp.image(image)
         disp.display()
     atexit.register(terminate_callback)
 
 
-    ip_text = get_ip()
+    ip_text, host_text = get_ip()
     draw.text((x_offset, y_offset), ip_text,  font=ImageFont.load_default(), fill=255)
+    draw.text((x_offset, y_offset + 8), host_text,  font=ImageFont.load_default(), fill=255)
     disp.image(image)
     disp.display()
-    time.sleep(1)
+    time.sleep(2)
 
     while True:
 
