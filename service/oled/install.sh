@@ -8,7 +8,7 @@ mkdir $USER_SERVICE_DIR
 echo "Create service file : $SERVICE_FILE"
 printf "\
 [Unit]
-After=network.target sound.target rnbo-runner-panel.service
+After=network.target sound.target
 
 [Service]
 Type=simple
