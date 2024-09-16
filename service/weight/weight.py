@@ -15,15 +15,18 @@ except OSC.AddressError as err:
 # start the transport via OSC
 OSC.send(target, "/rnbo/jack/transport/rolling", 1)
 
-hx = HX711(5, 6)
+hx = HX711(douts=[5], pd_sck=6)
 hx.autosetOffset()
 
 
 while True:
     try:
-        weightValue = hx.getWeight()
-        OSC.send(target, "/rnbo/inst/0/params/weight0/normalized", weightValue)
-        print(f"[INFO] POLLING_BASED | weight (grams): {weightValue} | {hx.REFERENCE_UNIT_A}")
+        weightValues = hx.getWeight()
+
+        print(f"weight (grams): {weightValues}")
+        for i, weightValue in enumerate(weightValues):
+            OSC.send(target, f"/rnbo/inst/0/params/weight{i}/normalized", weightValue)
+        
             
     except (KeyboardInterrupt, SystemExit):
         GPIO.cleanup()

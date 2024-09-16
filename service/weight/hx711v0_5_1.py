@@ -1,29 +1,36 @@
 import RPi.GPIO as GPIO
 import time
 import threading
+import numpy as np
 
 class HX711:
 
-    def __init__(self, dout, pd_sck):
+    def __init__(self, douts, pd_sck):
 
         self.PD_SCK = pd_sck
-        self.DOUT = dout
+        self.DOUT_list = douts
+        self.channels = len(douts)
 
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.PD_SCK, GPIO.OUT)
-        GPIO.setup(self.DOUT, GPIO.IN)
+        for DOUT in self.DOUT_list:
+            GPIO.setup(DOUT, GPIO.IN)
 
         # The value returned by the hx711 that corresponds to your reference
         # unit AFTER dividing by the SCALE.
         self.REFERENCE_UNIT_A = 114
-        self.OFFSET_A = 1
+        self.OFFSET_A = np.zeros((self.channels, 1))
 
         # Think about whether this is necessary.
         time.sleep(1)
 
 
     def isReady(self):
-        return GPIO.input(self.DOUT) == GPIO.LOW
+        # check all the DOUT pins to see if any of them are high.
+        for DOUT in self.DOUT_list:
+            if GPIO.input(DOUT) == GPIO.HIGH:
+                return False
+        return True
 
     def readNextBit(self):
        # Clock HX711 Digital Serial Clock (PD_SCK).  DOUT will be
@@ -31,23 +38,21 @@ class HX711:
        # lowering PD_SCL, when we know DOUT will be stable.
        GPIO.output(self.PD_SCK, True)
        GPIO.output(self.PD_SCK, False)
-       bitValue = GPIO.input(self.DOUT)
-
-       # Convert Boolean to int and return it.
-       return int(bitValue)
+       bitValues = [int(GPIO.input(DOUT)) for DOUT in self.DOUT_list]
+       bitValues = np.array(bitValues)
+       return np.expand_dims(bitValues, axis=1)
 
     def readNextByte(self):
-       byteValue = 0
+        byteValues = np.zeros((self.channels, 1), dtype=int)
 
-       # Read bits and build the byte from top, or bottom, depending
-       # on whether we are in MSB or LSB bit mode.
-       for x in range(8):
-            # Most significant Byte first.
-            byteValue <<= 1
-            byteValue |= self.readNextBit()
+        # Read bits and build the byte from top, or bottom, depending
+        # on whether we are in MSB or LSB bit mode.
+        for x in range(8):
+            byteValues <<= 1
+            byteValues |= self.readNextBit()
 
-       # Return the packed byte.
-       return byteValue 
+        # Return the packed byte.
+        return byteValues
 
     def readRawBytes(self, blockUntilReady=True):
         
@@ -56,44 +61,39 @@ class HX711:
            pass
 
         # Read three bytes of data from the HX711.
-        firstByte  = self.readNextByte()
-        secondByte = self.readNextByte()
-        thirdByte  = self.readNextByte()
+        firstBytes  = self.readNextByte()
+        secondBytes = self.readNextByte()
+        thirdBytes  = self.readNextByte()
 
         # HX711 Channel and gain factor are set by number of bits read
         # after 24 data bits.
         self.readNextBit()         
 
         # Most significant Byte first.
-        return [firstByte, secondByte, thirdByte]
-    
+        return np.concatenate([firstBytes, secondBytes, thirdBytes], axis=1)
+        
     def convertFromTwosComplement24bit(self, inputValue):
         return -(inputValue & 0x800000) + (inputValue & 0x7fffff)
 
-    def rawBytesToLong(self, rawBytes=None):
-        
-        if rawBytes is None:
-            return None
-
+    def rawBytesToLong(self, rawBytes):
         # Join the raw bytes into a single 24bit 2s complement value.
-        twosComplementValue = ((rawBytes[0] << 16) |
-                               (rawBytes[1] << 8)  |
-                               rawBytes[2])
+        twosComplementValue = ((rawBytes[:, 0:1] << 16) |
+                               (rawBytes[:, 1:2] << 8)  |
+                               rawBytes[:, 2:3])
         
         # Convert from 24bit twos-complement to a signed value.
         signed_int_value = self.convertFromTwosComplement24bit(twosComplementValue)
 
         # Return the sample value we've read from the HX711.
-        return int(signed_int_value)
+        return signed_int_value
 
     def getWeight(self, channel='A'):
         rawBytes = self.readRawBytes()
         longWithOffset = self.rawBytesToLong(rawBytes) - self.OFFSET_A
-        return longWithOffset / self.REFERENCE_UNIT_A
+        return longWithOffset[:,0] / self.REFERENCE_UNIT_A
 
-    def autosetOffset(self, channel='A'):
-        
-        newOffsetValue = 0
+    def autosetOffset(self, channel='A'):        
+        newOffsetValue = np.zeros((self.channels, 1))
         for i in range(10):
             rawBytes = self.readRawBytes()
             newOffsetValue += self.rawBytesToLong(rawBytes)
