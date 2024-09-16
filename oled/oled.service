@@ -1,0 +1,8 @@
+[Service]
+Type=simple
+ExecStart=/usr/bin/python /home/pi/2024-players_code/oled/oled.py
+Restart=on-abort
+ExecStartPre=-/bin/sleep 5
+
+[Install]
+WantedBy=default.target
