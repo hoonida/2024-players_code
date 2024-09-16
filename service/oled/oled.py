@@ -47,9 +47,9 @@ def main():
 
     # Alternatively load a TTF font.  Make sure the .ttf font file is in the same directory as the python script!
     # Some other nice fonts to try: http://www.dafont.com/bitmap.php
-    font = ImageFont.truetype('HomeVideo-Regular.ttf', 20)
-    text = f"10, Dangsan-ro, Yeongdeungpo-gu, Seoul, Republic of Korea"
-    text = text + "      " + text
+    font = ImageFont.truetype('DungGeunMo.ttf', 18)
+    text = f"서울특별시 영등포구 당산로 10"
+    text = text + "      " + text[:6]
 
     y_offset = 10
     x_offset = 0
@@ -88,9 +88,8 @@ def main():
         # Display image.
         disp.image(image)
         disp.display()
-        time.sleep(0.02)
 
-        x_offset -= 1
+        x_offset -= 2
         if x_offset < -max_offset:
             x_offset = 0
 
