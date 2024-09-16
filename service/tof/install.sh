@@ -10,8 +10,8 @@ printf "\
 [Service]
 Type=simple
 ExecStart=/usr/bin/python /home/pi/2024-players_code/service/tof/tof.py
-Restart=on-abort
-ExecStartPre=-/bin/sleep 5
+Restart=always
+RestartSec=5
 
 [Install]
 WantedBy=default.target
