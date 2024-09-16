@@ -18,11 +18,11 @@ RestartSec=5
 WantedBy=default.target
 " > $USER_SERVICE_DIR/$SERVICE_FILE
 
-sudo chmod +x $USER_SERVICE_DIR/$SERVICE_FILE
+chmod +x $USER_SERVICE_DIR/$SERVICE_FILE
 
 echo "Start service : $SERVICE_FILE"
-sudo systemctl daemon-reload
-sudo systemctl reenable $SERVICE_FILE
-sudo systemctl restart $SERVICE_FILE
-sudo systemctl status $SERVICE_FILE
+systemctl daemon-reload
+systemctl reenable $SERVICE_FILE
+systemctl restart $SERVICE_FILE
+systemctl status $SERVICE_FILE
 
