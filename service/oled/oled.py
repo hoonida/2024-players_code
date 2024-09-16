@@ -73,6 +73,8 @@ def main():
 
     ip_text = get_ip()
     draw.text((x_offset, y_offset), ip_text,  font=font, fill=255)
+    disp.image(image)
+    disp.display()
     time.sleep(1)
 
     while True:
