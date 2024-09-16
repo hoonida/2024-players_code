@@ -4,18 +4,22 @@ class TextLine:
         self.screen_size = screen_size
         self.text = text + '      '
         self.font = font
+
         self.x_shift_max, _ = font.getsize(self.text)
-        self.text += self.text[:12]
-        self.width_list = [font.getsize(ch)[0] for ch in self.text]
-        self.x_offset_list = [sum(self.width_list[:i]) for i in range(len(self.width_list))]
         self.x_shift = 0
         self.shift_wait = 20
+
+        self.text += self.text[:12] # add some characters to the end of the text to make it look continuous
+        self.width_list = [font.getsize(ch)[0] for ch in self.text]
+        self.x_offset_list = [sum(self.width_list[:i]) for i in range(len(self.width_list))]
+
 
     def draw(self, draw, x_offset, y_offset, fill=255):
         for i, ch in enumerate(self.text):
             x1 = self.x_shift + x_offset + self.x_offset_list[i]
             x2 = self.x_shift + x_offset + self.x_offset_list[i] + self.width_list[i]
 
+            # skip drawing if the character is not visible
             if x2 < 0 or x1 > self.screen_size[0]:
                 continue
             
