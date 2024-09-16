@@ -48,7 +48,7 @@ def main():
     # Alternatively load a TTF font.  Make sure the .ttf font file is in the same directory as the python script!
     # Some other nice fonts to try: http://www.dafont.com/bitmap.php
     font = ImageFont.truetype('HomeVideo-Regular.ttf', 20)
-    text = f"HELLO WORLD!"
+    text = f"10, Dangsan-ro, Yeongdeungpo-gu, Seoul, Republic of Korea"
     text = text + "      " + text
 
     y_offset = 10
