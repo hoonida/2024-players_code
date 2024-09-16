@@ -7,6 +7,9 @@ mkdir $USER_SERVICE_DIR
 
 echo "Create service file : $SERVICE_FILE"
 printf "\
+[Unit]
+After=network.target sound.target rnbo-runner-panel.service
+
 [Service]
 Type=simple
 ExecStart=/usr/bin/python /home/pi/2024-players_code/service/tof/tof.py
