@@ -1,4 +1,5 @@
 import os
+import atexit
 import time
 import logging
 
@@ -53,6 +54,13 @@ def main():
 
     text, max_offset = get_text_size(font, text)
 
+
+    def terminate_callback():
+        draw.rectangle((0, 0, *screen_size), outline=0, fill=0)
+        draw.text((0, 0), 'BYE!',  font=font, fill=255)
+        disp.image(image)
+        disp.display()
+    atexit.register(terminate_callback)
 
     while True:
 
