@@ -1,7 +1,7 @@
 #!/bin/bash
 
 USER_SERVICE_DIR=~/.config/systemd/user
-SERVICE_FILE=oled.service
+SERVICE_FILE=tof.service
 
 mkdir $USER_SERVICE_DIR
 
@@ -9,7 +9,7 @@ echo "Create service file : $SERVICE_FILE"
 printf "\
 [Service]
 Type=simple
-ExecStart=/usr/bin/python /home/pi/2024-players_code/oled/oled.py
+ExecStart=/usr/bin/python /home/pi/2024-players_code/service/tof/tof.py
 Restart=on-abort
 ExecStartPre=-/bin/sleep 5
 
