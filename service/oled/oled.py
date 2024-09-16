@@ -9,6 +9,13 @@ from PIL import ImageDraw
 from PIL import ImageFont
 
 
+def get_ip():
+    import socket
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    s.close()
+    return s.getsockname()[0]
+
 
 def main():
 
@@ -61,6 +68,11 @@ def main():
         disp.image(image)
         disp.display()
     atexit.register(terminate_callback)
+
+
+    ip_text = get_ip()
+    draw.text((x_offset, y_offset), ip_text,  font=font, fill=255)
+    time.sleep(1)
 
     while True:
 
