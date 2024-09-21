@@ -1,31 +1,32 @@
 #!/bin/bash
 
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 USER_SERVICE_DIR=/etc/systemd/system
-SERVICE_FILE=encoder.service
+SERVICE_NAME=encoder
 
 mkdir $USER_SERVICE_DIR
 
-echo "Create service file : $SERVICE_FILE"
+echo "Create service file : $SERVICE_NAME.service"
 printf "\
 [Unit]
 After=network.target sound.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/python /home/pi/2024-players_code/service/encoder/encoder.py
+ExecStart=/usr/bin/python $SCRIPT_DIR/$SERVICE_NAME.py
 User=pi
 Restart=always
 RestartSec=5
 
 [Install]
 WantedBy=default.target
-" > $USER_SERVICE_DIR/$SERVICE_FILE
+" > $USER_SERVICE_DIR/$SERVICE_NAME.service
 
-chmod +x $USER_SERVICE_DIR/$SERVICE_FILE
+chmod +x $USER_SERVICE_DIR/$SERVICE_NAME.service
 
-echo "Start service : $SERVICE_FILE"
+echo "Start service : $SERVICE_NAME.service"
 systemctl daemon-reload
-systemctl reenable $SERVICE_FILE
-systemctl restart $SERVICE_FILE
-systemctl status $SERVICE_FILE
+systemctl reenable $SERVICE_NAME.service
+systemctl restart $SERVICE_NAME.service
+systemctl status $SERVICE_NAME.service
 
