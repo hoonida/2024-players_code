@@ -1,7 +1,7 @@
-import time
+import sys, os, time, logging, argparse
+
 import RPi.GPIO as GPIO
 import liblo as OSC
-import sys
 
 class Encoder:
 

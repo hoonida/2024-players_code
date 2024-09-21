@@ -1,8 +1,5 @@
-import os
+import sys, os, time, logging, argparse
 import atexit
-import time
-import socket
-import logging
 
 import Adafruit_SSD1306
 from PIL import Image
@@ -13,6 +10,7 @@ import graphic
 
 
 def get_ip():
+    import socket
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect(("8.8.8.8", 80))
     ip = s.getsockname()[0]
@@ -20,7 +18,7 @@ def get_ip():
     return ip, socket.gethostname()
 
 
-def main():
+def main(args):
 
     # 128x64 display with hardware I2C:
     disp = Adafruit_SSD1306.SSD1306_128_64(rst=None)
@@ -89,7 +87,13 @@ def main():
 
 if __name__ == '__main__':
 
+    # Change the current working directory to the script directory
     dir_path = os.path.dirname(os.path.realpath(__file__))
     os.chdir(dir_path)
 
-    main()
+    # Parse command line arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--service', store=True)
+    args = parser.parse_args()
+
+    main(args)

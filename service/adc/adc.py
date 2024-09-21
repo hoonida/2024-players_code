@@ -1,29 +1,48 @@
+import sys, os, time, logging, argparse
+
 from gpiozero import MCP3008
 import liblo as OSC
-import sys
 
-# send all messages to port 1234 on the local machine
-try:
-    target = OSC.Address(1234)
-except OSC.AddressError as err:
-    print(err)    
-    sys.exit()
 
-# start the transport via OSC
-OSC.send(target, "/rnbo/jack/transport/rolling", 1)
 
-# read from last two channels
-potA = MCP3008(channel=6)
-potB = MCP3008(channel=7)
+def main(args):
 
-potA_filtered = 0.0
-potB_filtered = 0.0
+    # send all messages to port 1234 on the local machine
+    try:
+        target = OSC.Address(1234)
+    except OSC.AddressError as err:
+        print(err)    
+        sys.exit()
 
-while True:
+    # start the transport via OSC
+    OSC.send(target, "/rnbo/jack/transport/rolling", 1)
 
-    potA_filtered = potA_filtered * 0.99 + potA.value * 0.01
-    potB_filtered = potB_filtered * 0.99 + potB.value * 0.01
+    # read from last two channels
+    potA = MCP3008(channel=6)
+    potB = MCP3008(channel=7)
 
-    print("Pot A", potA_filtered, "Pot B", potB_filtered)
-    OSC.send(target, "/rnbo/inst/0/params/gain/normalized", potA_filtered)
-    OSC.send(target, "/rnbo/inst/0/params/gain2/normalized", potB_filtered)
+    potA_filtered = 0.0
+    potB_filtered = 0.0
+
+    while True:
+
+        potA_filtered = potA_filtered * 0.99 + potA.value * 0.01
+        potB_filtered = potB_filtered * 0.99 + potB.value * 0.01
+
+        print("Pot A", potA_filtered, "Pot B", potB_filtered)
+        OSC.send(target, "/rnbo/inst/0/params/gain/normalized", potA_filtered)
+        OSC.send(target, "/rnbo/inst/0/params/gain2/normalized", potB_filtered)
+
+
+if __name__ == '__main__':
+
+    # Change the current working directory to the script directory
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    os.chdir(dir_path)
+
+    # Parse command line arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--service', store=True)
+    args = parser.parse_args()
+
+    main(args)
