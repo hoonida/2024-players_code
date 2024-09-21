@@ -37,7 +37,7 @@ if __name__ == '__main__':
 
     # Parse command line arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('--service', store=True)
+    parser.add_argument('--service', action='store_true')
     args = parser.parse_args()
 
     main(args)
