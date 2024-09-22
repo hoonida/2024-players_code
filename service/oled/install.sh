@@ -8,9 +8,6 @@ mkdir $USER_SERVICE_DIR
 
 echo "Create service file : $SERVICE_NAME.service"
 printf "\
-[Unit]
-After=network.target sound.target
-
 [Service]
 Type=simple
 ExecStart=/usr/bin/python $SCRIPT_DIR/$SERVICE_NAME.py
