@@ -67,20 +67,7 @@ class Encoder:
         return self.value
 
 
-# GPIO 설정
-GPIO.setmode(GPIO.BCM)
 
-# 엔코더 콜백 함수
-def valueChanged(value, direction):
-
-    value = (value % 51)
-    
-    # 출력: 새 값과 방향
-    print("* 새 값: {}, 방향: {}".format(value, direction))
-
-    # 오실레이터 주파수를 업데이트하기 위해 OSC 메시지 전송
-    OSC.send(target, "/rnbo/inst/0/params/oscillator_frequency/normalized", value/50.0)
-    
 
 # OSC 주소 생성 함수
 def create_osc_address(port):
@@ -94,28 +81,62 @@ def create_osc_address(port):
 def send_initial_osc_message(target):
     OSC.send(target, "/rnbo/jack/transport/rolling", 1)
 
-# 엔코더 인스턴스 생성
-e1 = Encoder(26, 13, valueChanged)
 
-# OSC 타겟 생성
-target = create_osc_address(1234)
 
-# 초기 OSC 메시지 전송
-send_initial_osc_message(target)
 
-try:
-    while True:
-        # 엔코더로부터 현재 값을 가져옴
-        current_value = e1.getValue()
+def main(args):
+
+    # GPIO 설정
+    GPIO.setmode(GPIO.BCM)
+
+    # 엔코더 콜백 함수
+    def valueChanged(value, direction):
+
+        value = (value % 51)
+        
+        # 출력: 새 값과 방향
+        # print("* 새 값: {}, 방향: {}".format(value, direction))
+
+        # 오실레이터 주파수를 업데이트하기 위해 OSC 메시지 전송
+        OSC.send(target, "/rnbo/inst/0/params/oscillator_frequency/normalized", value/50.0)
         
 
-        # 현재 값을 출력
-        #print("현재 값은: {}".format(current_value))
-        
-        # 일시 정지
-        time.sleep(0.5)
-        
-except Exception as e:
-    print("오류 발생: {}".format(e))
-finally:
-    GPIO.cleanup()
+    # 엔코더 인스턴스 생성
+    e1 = Encoder(26, 13, valueChanged)
+
+    # OSC 타겟 생성
+    target = create_osc_address(1234)
+
+    # 초기 OSC 메시지 전송
+    send_initial_osc_message(target)
+
+    try:
+        while True:
+            # 엔코더로부터 현재 값을 가져옴
+            current_value = e1.getValue()
+            
+
+            # 현재 값을 출력
+            #print("현재 값은: {}".format(current_value))
+            
+            # 일시 정지
+            time.sleep(0.5)
+            
+    except Exception as e:
+        print("오류 발생: {}".format(e))
+    finally:
+        GPIO.cleanup()
+
+
+if __name__ == '__main__':
+
+    # Change the current working directory to the script directory
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    os.chdir(dir_path)
+
+    # Parse command line arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--service', action='store_true')
+    args = parser.parse_args()
+
+    main(args)

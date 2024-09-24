@@ -12,6 +12,8 @@ printf "\
 Type=simple
 ExecStart=/usr/bin/python $SCRIPT_DIR/$SERVICE_NAME.py
 User=pi
+RuntimeDirectory=encoder
+WorkingDirectory=/run/encoder
 Restart=always
 RestartSec=5
 
