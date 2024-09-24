@@ -29,7 +29,7 @@ def main(args):
         potA_filtered = potA_filtered * 0.99 + potA.value * 0.01
         potB_filtered = potB_filtered * 0.99 + potB.value * 0.01
 
-        print("Pot A", potA_filtered, "Pot B", potB_filtered)
+        # print("Pot A", potA_filtered, "Pot B", potB_filtered)
         OSC.send(target, "/rnbo/inst/0/params/gain/normalized", potA_filtered)
         OSC.send(target, "/rnbo/inst/0/params/gain2/normalized", potB_filtered)
 
