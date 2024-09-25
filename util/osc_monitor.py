@@ -10,6 +10,7 @@ def main(args):
         server = OSC.Server(1234)
     except OSC.ServerError as err:
         print(err)
+        print("Please stop rnbo services before running this script")
         sys.exit()
 
 
