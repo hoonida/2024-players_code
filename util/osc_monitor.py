@@ -17,9 +17,9 @@ def main(args):
         # register a fallback for unhandled messages
 
         def fallback(path, args, types, src):
-            print("got unknown message '%s' from '%s'" % (path, src.url))
+            print(f"{path}")
             for a, t in zip(args, types):
-                print("argument of type '%s': %s" % (t, a))
+                print(f"  [{t}] {a}")
 
         server.add_method(None, None, fallback)
 
