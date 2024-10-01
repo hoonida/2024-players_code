@@ -45,6 +45,8 @@ def get_ip():
 
 def main(args):
 
+    global text, address, screen_size, font, textline, text_lock
+
     # 128x64 display with hardware I2C:
     disp = Adafruit_SSD1306.SSD1306_128_64(rst=None)
 
