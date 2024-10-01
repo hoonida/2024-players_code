@@ -100,7 +100,7 @@ def main(args):
         transport_running = bool(i)
 
     def message_callback(path, args):
-        global textline
+        global text, address, textline
         i = args[0]
         global transport_running
         print("current step:", i)
@@ -128,17 +128,22 @@ def main(args):
 
     threading.Thread(target=run_server).start()
 
-    while True:
+    def run_display():
 
-        # Draw a black filled box to clear the image.
-        draw.rectangle((0, 0, *screen_size), outline=0, fill=0)
+        while True:
 
-        textline.draw(draw, x_offset, y_offset)
-        textline.shift(4)
+            # Draw a black filled box to clear the image.
+            draw.rectangle((0, 0, *screen_size), outline=0, fill=0)
 
-        # Display image.
-        disp.image(image)
-        disp.display()
+            textline.draw(draw, x_offset, y_offset)
+            textline.shift(4)
+
+            # Display image.
+            disp.image(image)
+            disp.display()
+
+    threading.Thread(target=run_display).start()
+
 
 
 
