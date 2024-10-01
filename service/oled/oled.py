@@ -98,10 +98,11 @@ def main(args):
         textline = graphic.TextLine(screen_size, text, font)
 
     def fallback(path, args, types, src):
-        print("got unknown message '%s' from '%s'" % (path, src.url))
-        print("don't panic - probably just the runner echoing back your changes :)")
-        for a, t in zip(args, types):
-            print("argument of type '%s': %s" % (t, a))
+        pass
+        # print("got unknown message '%s' from '%s'" % (path, src.url))
+        # print("don't panic - probably just the runner echoing back your changes :)")
+        # for a, t in zip(args, types):
+        #     print("argument of type '%s': %s" % (t, a))
 
     # register callback methods for server routes
     server.add_method("/rnbo/jack/transport/rolling", None, update_transport_state)
