@@ -126,7 +126,8 @@ def main(args):
 
 
     def run_server():
-        server.recv(100)
+        while True:
+            server.recv(100)
 
     threading.Thread(target=run_server).start()
 
