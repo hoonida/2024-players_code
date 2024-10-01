@@ -57,7 +57,7 @@ def main(args):
 
     # Alternatively load a TTF font.  Make sure the .ttf font file is in the same directory as the python script!
     # Some other nice fonts to try: http://www.dafont.com/bitmap.php
-    font = ImageFont.truetype('Heavitas.ttf', 18)
+    font = ImageFont.truetype('HomeVideo-Regular.ttf', 16)
     text = 'Empty Screen'
 
     y_offset = 10
@@ -100,6 +100,7 @@ def main(args):
         transport_running = bool(i)
 
     def message_callback(path, args):
+        global textline
         i = args[0]
         global transport_running
         print("current step:", i)
@@ -109,10 +110,6 @@ def main(args):
 
     def fallback(path, args, types, src):
         pass
-        # print("got unknown message '%s' from '%s'" % (path, src.url))
-        # print("don't panic - probably just the runner echoing back your changes :)")
-        # for a, t in zip(args, types):
-        #     print("argument of type '%s': %s" % (t, a))
 
     # register callback methods for server routes
     server.add_method("/rnbo/jack/transport/rolling", None, update_transport_state)
