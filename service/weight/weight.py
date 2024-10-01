@@ -17,7 +17,7 @@ def main(args):
     # start the transport via OSC
     OSC.send(target, "/rnbo/jack/transport/rolling", 1)
 
-    hx = HX711(douts=[5], pd_sck=6)
+    hx = HX711(douts=[6,12,13,26], pd_sck=5)
     hx.autosetOffset()
 
     while True:
