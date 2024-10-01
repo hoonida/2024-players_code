@@ -1,5 +1,6 @@
 import sys, os, time, logging, argparse
 import atexit
+import threading
 
 import liblo as OSC
 import Adafruit_SSD1306
@@ -124,10 +125,12 @@ def main(args):
     OSC.send(target, "/rnbo/listeners/add", f"127.0.0.1:4321")
 
 
+    def run_server():
+        server.recv(100)
+
+    threading.Thread(target=run_server).start()
 
     while True:
-
-        server.recv(100)
 
         # Draw a black filled box to clear the image.
         draw.rectangle((0, 0, *screen_size), outline=0, fill=0)
