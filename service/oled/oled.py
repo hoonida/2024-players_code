@@ -113,7 +113,7 @@ def main(args):
 
     # register callback methods for server routes
     server.add_method("/rnbo/jack/transport/rolling", None, update_transport_state)
-    server.add_method("/rnbo/inst/0/messages/out/oled_step", 'f', message_callback)
+    server.add_method("/rnbo/inst/0/messages/out/oled_step", 'i', message_callback)
 
     # Finally add fallback method for unhandled OSC addrs
     server.add_method(None, None, fallback)
