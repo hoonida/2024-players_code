@@ -89,6 +89,7 @@ def main(args):
     def message_callback(path, args):
         index = int(args[0])
         text = address[index]
+        print(f'{index=}, {text=}')
         textline = graphic.TextLine(screen_size, text, font)
 
     server.add_method("/rnbo/inst/0/messages/out/oled_step", 'f', message_callback)
@@ -101,7 +102,7 @@ def main(args):
         draw.rectangle((0, 0, *screen_size), outline=0, fill=0)
 
         textline.draw(draw, x_offset, y_offset)
-        textline.shift(2)
+        textline.shift(4)
 
         # Display image.
         disp.image(image)
