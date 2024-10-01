@@ -12,6 +12,7 @@ sudo i2cdetect -y 1
 sudo apt remove python3-rpi.gpio
 sudo apt install python3-rpi-lgpio
 sudo apt-get -y liblo-dev
+pip uninstall -y RPi.GPIO --break-system-packages
 
 # Setup Python
 sudo apt-get -y install libopenblas-dev # for numpy

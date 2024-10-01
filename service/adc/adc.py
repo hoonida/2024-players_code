@@ -18,16 +18,16 @@ def main(args):
     OSC.send(target, "/rnbo/jack/transport/rolling", 1)
 
     # read from last two channels
-    potA = MCP3008(channel=6)
-    potB = MCP3008(channel=7)
+    potA = MCP3008(channel=6)   #6 or 0
+    potB = MCP3008(channel=7)   #7 or 1
 
     potA_filtered = 0.0
     potB_filtered = 0.0
 
     while True:
 
-        potA_filtered = potA_filtered * 0.99 + potA.value * 0.01
-        potB_filtered = potB_filtered * 0.99 + potB.value * 0.01
+        potA_filtered = potA_filtered * 0.95 + potA.value * 0.05
+        potB_filtered = potB_filtered * 0.95 + potB.value * 0.05
 
         # print("Pot A", potA_filtered, "Pot B", potB_filtered)
         OSC.send(target, "/rnbo/inst/0/params/gain/normalized", potA_filtered)
