@@ -80,7 +80,7 @@ def main(args):
     time.sleep(2)
 
     try:
-        server = OSC.Server(1234)
+        server = OSC.Server(4321)
     except OSC.ServerError as err:
         print(err)
         print("Please stop rnbo services before running this script")
