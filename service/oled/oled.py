@@ -10,7 +10,7 @@ from PIL import ImageFont
 
 import graphic
 
-
+text = 'Empty Screen'
 address = {
     0 : "Empty Screen",
     1 : "10, Dangsan-ro, Yeongdeungpo-gu",
@@ -18,6 +18,21 @@ address = {
     3 : "273, Ttukseom-ro, Seongdong-gu",
     4 : "281, Eulji-ro, Jung-gu",
 }
+screen_size = None
+font = None
+textline = None
+text_lock = threading.Lock()
+
+def message_callback(path, args):
+    global text, address, screen_size, font, textline, text_lock
+    i = args[0]
+    global transport_running
+    print("current step:", i)
+
+    with text_lock:
+        text = address[i]
+        textline = graphic.TextLine(screen_size, text, font)
+    
 
 def get_ip():
     import socket
@@ -99,15 +114,6 @@ def main(args):
         global transport_running
         transport_running = bool(i)
 
-    def message_callback(path, args):
-        global text, address, textline
-        i = args[0]
-        global transport_running
-        print("current step:", i)
-
-        text = address[i]
-        textline = graphic.TextLine(screen_size, text, font)
-
     def fallback(path, args, types, src):
         pass
 
@@ -128,22 +134,18 @@ def main(args):
 
     threading.Thread(target=run_server).start()
 
-    def run_display():
+    while True:
 
-        while True:
+        # Draw a black filled box to clear the image.
+        draw.rectangle((0, 0, *screen_size), outline=0, fill=0)
 
-            # Draw a black filled box to clear the image.
-            draw.rectangle((0, 0, *screen_size), outline=0, fill=0)
-
+        with text_lock:
             textline.draw(draw, x_offset, y_offset)
             textline.shift(4)
 
-            # Display image.
-            disp.image(image)
-            disp.display()
-
-    threading.Thread(target=run_display).start()
-
+        # Display image.
+        disp.image(image)
+        disp.display()
 
 
 
