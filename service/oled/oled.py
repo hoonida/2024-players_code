@@ -11,6 +11,7 @@ import graphic
 
 
 address = {
+    0 : "",
     1 : "10, Dangsan-ro, Yeongdeungpo-gu",
     2 : "40, Sejong-daero, Jung-gu",
     3 : "273, Ttukseom-ro, Seongdong-gu",
@@ -79,12 +80,18 @@ def main(args):
     disp.display()
     time.sleep(2)
 
+    # set up OSC client - send all messages to port 1234 on the local machine (rnbo runner)
+    try:
+        target = OSC.Address(1234)
+    except OSC.AddressError as err:
+        print(err)
+        sys.exit()# set up OSC server - listening on port 4321
+
     try:
         server = OSC.Server(4321)
     except OSC.ServerError as err:
         print(err)
-        print("Please stop rnbo services before running this script")
-        sys.exit()
+
 
     def update_transport_state(path, args):
         i = args[0]
@@ -111,6 +118,8 @@ def main(args):
     # Finally add fallback method for unhandled OSC addrs
     server.add_method(None, None, fallback)
 
+    # Set up RNBO OSC listener
+    OSC.send(target, "/rnbo/listeners/add", f"127.0.0.1:4321")
 
 
 
