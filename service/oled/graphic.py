@@ -7,7 +7,7 @@ class TextLine:
 
         self.x_shift_max, _ = font.getsize(self.text)
         self.x_shift = 0
-        self.shift_wait = 20
+        self.shift_wait = 10
 
         self.text += self.text[:12] # add some characters to the end of the text to make it look continuous
         self.width_list = [font.getsize(ch)[0] for ch in self.text]
