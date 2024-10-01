@@ -98,7 +98,7 @@ def main(args):
         # print("* 새 값: {}, 방향: {}".format(value, direction))
 
         # 오실레이터 주파수를 업데이트하기 위해 OSC 메시지 전송
-        OSC.send(target, "/rnbo/inst/0/params/oscillator_frequency/normalized", value/50.0)
+        OSC.send(target, "/rnbo/inst/0/params/encoder_num/normalized", value/50.0)
         
 
     # 엔코더 인스턴스 생성
