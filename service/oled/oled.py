@@ -86,12 +86,19 @@ def main(args):
         print("Please stop rnbo services before running this script")
         sys.exit()
 
+    def update_transport_state(path, args):
+        i = args[0]
+        global transport_running
+        transport_running = bool(i)
+
     def message_callback(path, args):
         index = int(args[0])
         text = address[index]
         print(f'{index=}, {text=}')
         textline = graphic.TextLine(screen_size, text, font)
-
+        
+    # register callback methods for server routes
+    server.add_method("/rnbo/jack/transport/rolling", None, update_transport_state)
     server.add_method("/rnbo/inst/0/messages/out/oled_step", 'f', message_callback)
 
     while True:
