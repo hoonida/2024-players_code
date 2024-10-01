@@ -10,9 +10,9 @@ from PIL import ImageFont
 
 import graphic
 
-text = 'Empty Screen'
+text = ''
 address = {
-    0 : "Empty Screen",
+    0 : "",
     1 : "10, Dangsan-ro, Yeongdeungpo-gu",
     2 : "40, Sejong-daero, Jung-gu",
     3 : "273, Ttukseom-ro, Seongdong-gu",
@@ -75,7 +75,7 @@ def main(args):
     # Alternatively load a TTF font.  Make sure the .ttf font file is in the same directory as the python script!
     # Some other nice fonts to try: http://www.dafont.com/bitmap.php
     font = ImageFont.truetype('HomeVideo-Regular.ttf', 16)
-    text = 'Empty Screen'
+    text = ''
 
     y_offset = 10
     x_offset = 0
