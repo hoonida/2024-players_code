@@ -1,6 +1,7 @@
 import sys, os, time, logging, argparse
 import atexit
 
+import liblo as OSC
 import Adafruit_SSD1306
 from PIL import Image
 from PIL import ImageDraw
@@ -8,6 +9,13 @@ from PIL import ImageFont
 
 import graphic
 
+
+address = {
+    1 : "10, Dangsan-ro, Yeongdeungpo-gu",
+    2 : "40, Sejong-daero, Jung-gu",
+    3 : "273, Ttukseom-ro, Seongdong-gu",
+    4 : "281, Eulji-ro, Jung-gu",
+}
 
 def get_ip():
     import socket
@@ -71,7 +79,23 @@ def main(args):
     disp.display()
     time.sleep(2)
 
+    try:
+        server = OSC.Server(1234)
+    except OSC.ServerError as err:
+        print(err)
+        print("Please stop rnbo services before running this script")
+        sys.exit()
+
+    def message_callback(path, args):
+        index = int(args[0])
+        text = address[index]
+        textline = graphic.TextLine(screen_size, text, font)
+
+    server.add_method("/rnbo/inst/0/messages/out/oled_step", 'f', message_callback)
+
     while True:
+
+        server.recv(100)
 
         # Draw a black filled box to clear the image.
         draw.rectangle((0, 0, *screen_size), outline=0, fill=0)
