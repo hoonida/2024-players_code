@@ -99,9 +99,11 @@ def main(args):
         transport_running = bool(i)
 
     def message_callback(path, args):
-        index = int(args[0])
-        text = address[index]
-        print(f'{index=}, {text=}')
+        i = args[0]
+        global transport_running
+        print("current step:", i)
+
+        text = address[i]
         textline = graphic.TextLine(screen_size, text, font)
 
     def fallback(path, args, types, src):
