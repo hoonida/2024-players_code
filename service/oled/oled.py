@@ -56,7 +56,7 @@ def main(args):
     # Alternatively load a TTF font.  Make sure the .ttf font file is in the same directory as the python script!
     # Some other nice fonts to try: http://www.dafont.com/bitmap.php
     font = ImageFont.truetype('DungGeunMo.ttf', 18)
-    text = f"서울특별시 영등포구 당산로 10"
+    text = address[0]
 
     y_offset = 10
     x_offset = 0
