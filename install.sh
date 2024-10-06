@@ -9,9 +9,9 @@ sudo raspi-config nonint do_spi 0
 sudo i2cdetect -y 1
 
 # Setup GPIO Library
-sudo apt remove -y python3-rpi.gpio
-sudo apt install -y python3-rpi-lgpio
-sudo apt-get -y liblo-dev
+sudo apt -y remove python3-rpi.gpio
+sudo apt -y install python3-rpi-lgpio
+sudo apt-get -y install liblo-dev
 pip uninstall -y RPi.GPIO --break-system-packages
 
 # Setup Python
