@@ -30,8 +30,8 @@ def main(args):
         potB_filtered = potB_filtered * 0.95 + potB.value * 0.05
 
         # print("Pot A", potA_filtered, "Pot B", potB_filtered)
-        OSC.send(target, "/rnbo/inst/0/params/gain/normalized", potA_filtered)
-        OSC.send(target, "/rnbo/inst/0/params/gain2/normalized", potB_filtered)
+        OSC.send(target, "/rnbo/inst/0/params/gain/normalized", 1 - potA_filtered)
+        OSC.send(target, "/rnbo/inst/0/params/gain2/normalized", 1 - potB_filtered)
 
 
 if __name__ == '__main__':
