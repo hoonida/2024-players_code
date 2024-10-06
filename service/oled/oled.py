@@ -136,15 +136,24 @@ def main(args):
 
     threading.Thread(target=run_server).start()
 
+    # message_callback('', (1,))
+
+
+    last_time = time.time()
     while True:
 
         # Draw a black filled box to clear the image.
         draw.rectangle((0, 0, *screen_size), outline=0, fill=0)
 
-        with text_lock:
-            textline.draw(draw, x_offset, y_offset)
-            textline.shift(4)
+        current_time = time.time()
+        time_diff = current_time - last_time
+        # print(f'{time_diff=} {int(15*time_diff)}')
+        textline.shift(int(15*time_diff))
+        last_time = current_time
 
+        # with text_lock:
+        textline.draw(draw, x_offset, y_offset)
+        
         # Display image.
         disp.image(image)
         disp.display()
