@@ -24,8 +24,8 @@ def main(args):
     vl53 = vl53l5cx.VL53L5CX()
     print("Done!")
     vl53.set_resolution(4 * 4)
-    vl53.set_ranging_frequency_hz(30)
-    vl53.set_integration_time_ms(20)
+    vl53.set_ranging_frequency_hz(15)
+    vl53.set_integration_time_ms(50)
     vl53.start_ranging()
 
     while True:
@@ -36,7 +36,7 @@ def main(args):
             # 2d array of reflectance
             reflectance = numpy.flipud(numpy.array(data.reflectance).reshape((-1, )))
             # 2d array of good ranging data
-            status = numpy.isin(numpy.flipud(numpy.array(data.target_status).reshape((-1, ))), (STATUS_RANGE_VALID, STATUS_RANGE_VALID_LARGE_PULSE))
+            # status = numpy.isin(numpy.flipud(numpy.array(data.target_status).reshape((-1, ))), (STATUS_RANGE_VALID, STATUS_RANGE_VALID_LARGE_PULSE))
 
             distance = distance[-16:]
             reflectance = reflectance[-16:]
@@ -48,7 +48,7 @@ def main(args):
             # print(f'{min_distance=}')
             OSC.send(target, "/rnbo/inst/0/params/ToF_num/normalized", min_distance/1000.0)
     
-        time.sleep(0.03)
+        time.sleep(0.1)
 
 
 if __name__ == '__main__':
