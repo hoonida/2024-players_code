@@ -46,7 +46,7 @@ def main(args):
 
             min_distance = distance_masked.min()
             # print(f'{min_distance=}')
-            OSC.send(target, "/rnbo/inst/0/params/ToF_num/normalized", min_distance/1000.0)
+            OSC.send(target, "/rnbo/inst/0/params/ToF_num/normalized", min_distance/2000.0)
     
         time.sleep(0.1)
 
