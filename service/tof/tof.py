@@ -42,7 +42,7 @@ def main(args):
             reflectance = reflectance[-16:]
             mask = (reflectance > 0)
             
-            distance_masked = distance * mask + 1000.0 * numpy.invert(mask)
+            distance_masked = distance * mask + 2000.0 * numpy.invert(mask)
 
             min_distance = distance_masked.min()
             # print(f'{min_distance=}')
