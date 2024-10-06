@@ -23,7 +23,7 @@ def main(args):
     while True:
         weightValues = hx.getWeightFiltered()
 
-        print(f"weight (grams): {weightValues}")
+        # print(f"weight (grams): {weightValues}")
         for i, weightValue in enumerate(weightValues):
             OSC.send(target, f"/rnbo/inst/0/params/weight{i}/normalized", weightValue)
 
