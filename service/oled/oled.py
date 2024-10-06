@@ -77,7 +77,7 @@ def main(args):
     font = ImageFont.truetype('HomeVideo-Regular.ttf', 16)
     text = ''
 
-    y_offset = 10
+    y_offset = 8
     x_offset = 0
 
     textline = graphic.TextLine(screen_size, text, font)
@@ -156,7 +156,11 @@ def main(args):
         
         # Display image.
         disp.image(image)
-        disp.display()
+
+        try:
+            disp.display()
+        except:
+            pass
 
 
 
