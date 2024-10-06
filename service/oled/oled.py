@@ -136,7 +136,7 @@ def main(args):
 
     threading.Thread(target=run_server).start()
 
-    # message_callback('', (1,))
+    message_callback('', (0,))
 
 
     last_time = time.time()
