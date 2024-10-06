@@ -12,7 +12,7 @@ import graphic
 
 text = ''
 address = {
-    0 : "",
+    0 : "Seek...",
     1 : "10, Dangsan-ro, Yeongdeungpo-gu",
     2 : "40, Sejong-daero, Jung-gu",
     3 : "273, Ttukseom-ro, Seongdong-gu",
