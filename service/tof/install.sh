@@ -13,7 +13,7 @@ After=network.target sound.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/python $SCRIPT_DIR/$SERVICE_NAME.py
+ExecStart=/usr/bin/python $SCRIPT_DIR/$SERVICE_NAME.py --service
 User=pi
 Restart=always
 RestartSec=5
