@@ -118,7 +118,8 @@ def main(args):
             
 
             # 현재 값을 출력
-            #print("현재 값은: {}".format(current_value))
+            if not args.service:
+                print(f"{current_value=}")
             
             # 일시 정지
             time.sleep(0.5)
