@@ -133,6 +133,7 @@ def main(args):
     def run_server():
         while True:
             server.recv(100)
+            time.sleep(0.01)
 
     threading.Thread(target=run_server).start()
 
@@ -147,7 +148,10 @@ def main(args):
 
         current_time = time.time()
         time_diff = current_time - last_time
-        # print(f'{time_diff=} {int(15*time_diff)}')
+
+        if not args.service:
+            print(f'{time_diff=} {int(15*time_diff)}')
+            
         textline.shift(int(15*time_diff))
         last_time = current_time
 
