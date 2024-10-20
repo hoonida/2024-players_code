@@ -29,11 +29,14 @@ def main(args):
         potA_filtered = potA_filtered * 0.85 + potA.value * 0.15
         potB_filtered = potB_filtered * 0.85 + potB.value * 0.15
 
+        if not args.service:
+            print(f"Pot A: {potA_filtered} Pot B: {potB_filtered}")
+
         # print("Pot A", potA_filtered, "Pot B", potB_filtered)
         OSC.send(target, "/rnbo/inst/0/params/gain/normalized", 1 - potA_filtered)
         OSC.send(target, "/rnbo/inst/0/params/gain2/normalized", 1 - potB_filtered)
 
-        time.sleep(0.06)
+        time.sleep(0.1)
 
 
 if __name__ == '__main__':
