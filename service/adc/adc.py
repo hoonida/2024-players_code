@@ -26,12 +26,14 @@ def main(args):
 
     while True:
 
-        potA_filtered = potA_filtered * 0.95 + potA.value * 0.05
-        potB_filtered = potB_filtered * 0.95 + potB.value * 0.05
+        potA_filtered = potA_filtered * 0.85 + potA.value * 0.15
+        potB_filtered = potB_filtered * 0.85 + potB.value * 0.15
 
         # print("Pot A", potA_filtered, "Pot B", potB_filtered)
         OSC.send(target, "/rnbo/inst/0/params/gain/normalized", 1 - potA_filtered)
         OSC.send(target, "/rnbo/inst/0/params/gain2/normalized", 1 - potB_filtered)
+
+        time.sleep(0.06)
 
 
 if __name__ == '__main__':
