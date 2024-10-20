@@ -45,9 +45,13 @@ def main(args):
             distance_masked = distance * mask + 2000.0 * numpy.invert(mask)
 
             min_distance = distance_masked.min()
-            if args.service:
+            if not args.service:
                 print(f'{min_distance=}')
             OSC.send(target, "/rnbo/inst/0/params/ToF_num/normalized", min_distance/2000.0)
+            
+        else:
+            if not args.service:
+                print("No data ready")
     
         time.sleep(0.1)
 
