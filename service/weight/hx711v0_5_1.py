@@ -96,7 +96,7 @@ class HX711:
 
     def getWeightFiltered(self):
         new_weights = self.getWeight()
-        self.old_weights = self.old_weights * 0.7 + new_weights * 0.3
+        self.old_weights = self.old_weights * 0.5 + new_weights * 0.5
         return self.old_weights
 
 

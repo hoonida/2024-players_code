@@ -29,7 +29,7 @@ def main(args):
         for i, weightValue in enumerate(weightValues):
             OSC.send(target, f"/rnbo/inst/0/params/weight{i}/normalized", weightValue)
 
-        time.sleep(0.05)
+        time.sleep(0.5)
 
 
 
