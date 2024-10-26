@@ -1,6 +1,6 @@
 # Setup Basic Environment
-sudo apt-get -y update python3-pip
-sudo apt-get -y install git
+sudo apt-get -y update
+sudo apt-get -y install git python3-pip
 
 # Setup SPI & I2C
 sudo apt-get -y install i2c-tools
