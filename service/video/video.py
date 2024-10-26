@@ -54,7 +54,7 @@ def main(args):
 
     # send all messages to port 1234 on the local machine
     try:
-        target = OSC.Address("127.0.0.1", 1234)
+        target = OSC.Address("192.168.10.13", 1234)
     except OSC.AddressError as err:
         print(err)    
         sys.exit()
@@ -65,7 +65,7 @@ def main(args):
 
 
     # 파일 경로 및 시작, 종료 시간 설정
-    video_path = "sound_table1_1080p.mov"
+    video_path = "video.mov"
     start_time = 5    # 시작 시간 (초 단위)
     end_time = 10     # 종료 시간 (초 단위)
 
@@ -79,43 +79,48 @@ def main(args):
 
     # 플레이어 시작
     player.play()
-    time.sleep(1)
-    player.pause()
-    video_length_ms = player.get_length()
+    time.sleep(0.1)  # 첫 프레임을 로드하기 위한 짧은 대기
+    player.set_time(0)  # 첫 프레임 위치로 이동
+    player.pause()      # 일시정지 상태 유지
+    
 
     mode = "wait" # wait, event
 
-
-    while True:
+    for scan in tof_scan(interval=0.1):
 
         if mode == 'wait':
-            for scan in tof_scan(interval=0.1):
-                OSC.send(target, "/rnbo/inst/0/params/sound_on/normalized", 0)
-                min_distance = scan.min()
-                if not args.service:
-                    print(f'{min_distance=}')
 
-                if min_distance < 200:
-                    player.play()
-                    mode = 'play'
+            # time.sleep(5)
+            # player.play()
+            # mode = 'play'
+
+            OSC.send(target, "/rnbo/inst/0/params/sound_on/normalized", 0)
+            min_distance = scan.min()
+            if not args.service:
+                print(f'{min_distance=}')
+
+            if min_distance < 200:
+                player.play()
+                mode = 'play'
 
         elif mode == 'play':
 
-            while True:
+            player_time = player.get_time()
+            print(f'{player_time=}')
 
-                player_time = player.get_time()
-                print(f'{player_time=}')
-                
-                if 3000 <= player_time and player_time < 6000:
-                    OSC.send(target, "/rnbo/inst/0/params/sound_on/normalized", 1)
-                else:
-                    OSC.send(target, "/rnbo/inst/0/params/sound_on/normalized", 0)
+            if 27000 <= player_time and player_time < 46000:
+                OSC.send(target, "/rnbo/inst/0/params/sound_on/normalized", 1)
+            else:
+                OSC.send(target, "/rnbo/inst/0/params/sound_on/normalized", 0)
 
-                if is_playing():
-                    mode = 'wait'
-                    break
+            if player_time > 37000:
 
-                time.sleep(0.1)
+                player.pause()      # 일시정지 상태 유지
+                player.set_time(0)  # 첫 프레임 위치로 이동
+                player.play()
+                time.sleep(0.1)  # 첫 프레임을 로드하기 위한 짧은 대기
+                player.pause()      # 일시정지 상태 유지
+                mode = 'wait'
             
 
 
