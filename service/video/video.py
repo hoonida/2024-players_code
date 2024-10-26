@@ -108,7 +108,7 @@ def main(args):
             player_time = player.get_time()
             print(f'{player_time=}')
 
-            if 27000 <= player_time and player_time < 46000:
+            if 27000 <= player_time and player_time < 33000:
                 OSC.send(target, "/rnbo/inst/0/params/sound_on/normalized", 1)
             else:
                 OSC.send(target, "/rnbo/inst/0/params/sound_on/normalized", 0)
