@@ -18,8 +18,8 @@ def main(args):
     OSC.send(target, "/rnbo/jack/transport/rolling", 1)
 
     # read from last two channels
-    potA = MCP3008(channel=6)   #6 or 0
-    potB = MCP3008(channel=7)   #7 or 1
+    potA = MCP3008(channel=0)   #6 or 0
+    potB = MCP3008(channel=1)   #7 or 1
 
     potA_filtered = 0.0
     potB_filtered = 0.0

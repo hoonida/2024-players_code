@@ -102,8 +102,8 @@ def main(args):
         
 
     # 엔코더 인스턴스 생성
-    e1 = Encoder(26, 13, valueChanged)
-    # e1 = Encoder(4, 17, valueChanged)
+    # e1 = Encoder(26, 13, valueChanged)
+    e1 = Encoder(27, 17, valueChanged)
 
     # OSC 타겟 생성
     target = create_osc_address(1234)
