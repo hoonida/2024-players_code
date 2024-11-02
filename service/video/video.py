@@ -80,11 +80,12 @@ def main(args):
     # 플레이어 시작
     player.play()
     time.sleep(0.1)  # 첫 프레임을 로드하기 위한 짧은 대기
-    player.set_time(0)  # 첫 프레임 위치로 이동
+    player.set_time(3000)  # 첫 프레임 위치로 이동
     player.pause()      # 일시정지 상태 유지
     
 
     mode = "wait" # wait, event
+    detect_count = 0
 
     for scan in tof_scan(interval=0.1):
 
@@ -99,9 +100,16 @@ def main(args):
             if not args.service:
                 print(f'{min_distance=}')
 
-            if min_distance < 200:
+            if min_distance < 950:
+                detect_count += 1
+            else:
+                detect_count = 0
+
+            if detect_count > 3:
+                detect_count = 0
                 player.play()
                 mode = 'play'
+
 
         elif mode == 'play':
 
@@ -116,7 +124,7 @@ def main(args):
             if player_time > 98000:
 
                 player.pause()      # 일시정지 상태 유지
-                player.set_time(0)  # 첫 프레임 위치로 이동
+                player.set_time(3000)  # 첫 프레임 위치로 이동
                 player.play()
                 time.sleep(0.1)  # 첫 프레임을 로드하기 위한 짧은 대기
                 player.pause()      # 일시정지 상태 유지
