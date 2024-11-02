@@ -11,6 +11,9 @@ printf "\
 [Unit]
 After=network.target sound.target
 
+[Timer]
+OnBootSec=30s
+
 [Service]
 Type=simple
 ExecStart=/usr/bin/python $SCRIPT_DIR/$SERVICE_NAME.py --service
@@ -28,5 +31,4 @@ echo "Start service : $SERVICE_NAME.service"
 systemctl daemon-reload
 systemctl reenable $SERVICE_NAME.service
 systemctl restart $SERVICE_NAME.service
-systemctl status $SERVICE_NAME.service
 
