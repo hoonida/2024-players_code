@@ -58,9 +58,8 @@ def main(args):
         try:
             target = OSC.Address("192.168.10.13", 1234)
             break
-        except OSC.AddressError as err:
-            print(err)    
-            print("Retry in 1 second")
+        except OSC.AddressError as err: 
+            print("Retry establishing connection on in 1 second")
             time.sleep(1)
 
 
@@ -70,15 +69,14 @@ def main(args):
         try:
             OSC.send(target, "/rnbo/jack/transport/rolling", 1)
             break
-        except OSC.OSCClientError as err:
-            print(err)
-            print("Retry in 1 second")
+        except:
+            print("Retry starting transportion in 1 second")
             time.sleep(1)
 
 
 
     # 파일 경로 및 시작, 종료 시간 설정
-    video_path = "sound table_interactive_m.mov"
+    video_path = "sound_table_interactive.mov"
     start_time = 5    # 시작 시간 (초 단위)
     end_time = 10     # 종료 시간 (초 단위)
 
@@ -93,7 +91,7 @@ def main(args):
     # 플레이어 시작
     player.play()
     time.sleep(0.1)  # 첫 프레임을 로드하기 위한 짧은 대기
-    player.set_time(3000)  # 첫 프레임 위치로 이동
+    player.set_time(4000)  # 첫 프레임 위치로 이동
     player.pause()      # 일시정지 상태 유지
     
 
@@ -137,7 +135,7 @@ def main(args):
             if player_time > 98000:
 
                 player.pause()      # 일시정지 상태 유지
-                player.set_time(3000)  # 첫 프레임 위치로 이동
+                player.set_time(4000)  # 첫 프레임 위치로 이동
                 player.play()
                 time.sleep(0.1)  # 첫 프레임을 로드하기 위한 짧은 대기
                 player.pause()      # 일시정지 상태 유지
