@@ -52,15 +52,28 @@ def tof_scan(interval=0.1):
 
 def main(args):
 
-    # send all messages to port 1234 on the local machine
-    try:
-        target = OSC.Address("192.168.10.13", 1234)
-    except OSC.AddressError as err:
-        print(err)    
-        sys.exit()
+    while True:
 
-    # start the transport via OSC
-    OSC.send(target, "/rnbo/jack/transport/rolling", 1)
+        # send all messages to port 1234 on the local machine
+        try:
+            target = OSC.Address("192.168.10.13", 1234)
+            break
+        except OSC.AddressError as err:
+            print(err)    
+            print("Retry in 1 second")
+            time.sleep(1)
+
+
+    while True:
+
+        # start the transport via OSC
+        try:
+            OSC.send(target, "/rnbo/jack/transport/rolling", 1)
+            break
+        except OSC.OSCClientError as err:
+            print(err)
+            print("Retry in 1 second")
+            time.sleep(1)
 
 
 
