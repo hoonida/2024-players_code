@@ -90,13 +90,13 @@ def main(args):
         disp.display()
     atexit.register(terminate_callback)
 
-
-    ip_text, host_text = get_ip()
-    draw.text((x_offset, y_offset), ip_text,  font=ImageFont.load_default(), fill=255)
-    draw.text((x_offset, y_offset + 8), host_text,  font=ImageFont.load_default(), fill=255)
-    disp.image(image)
-    disp.display()
-    time.sleep(2)
+    # 이 부분은 get_ip()함수를 콜해서 실행하는 부분. 지정 공유기가 없으면 작동 안해서 주석처리함.  
+    # ip_text, host_text = get_ip()
+    # draw.text((x_offset, y_offset), ip_text,  font=ImageFont.load_default(), fill=255)
+    # draw.text((x_offset, y_offset + 8), host_text,  font=ImageFont.load_default(), fill=255)
+    # disp.image(image)
+    # disp.display()
+    # time.sleep(2)
 
     # set up OSC client - send all messages to port 1234 on the local machine (rnbo runner)
     try:
