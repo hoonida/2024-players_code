@@ -76,7 +76,7 @@ def main(args):
 
 
     # 파일 경로 및 시작, 종료 시간 설정
-    video_path = "sound_table_interactive.mov"
+    video_path = "sound table_interactive_m.mov.mov"
     start_time = 5    # 시작 시간 (초 단위)
     end_time = 10     # 종료 시간 (초 단위)
 
@@ -91,7 +91,7 @@ def main(args):
     # 플레이어 시작
     player.play()
     time.sleep(0.1)  # 첫 프레임을 로드하기 위한 짧은 대기
-    player.set_time(4000)  # 첫 프레임 위치로 이동
+    player.set_time(1000)  # 첫 프레임 위치로 이동
     player.pause()      # 일시정지 상태 유지
     
 
@@ -127,15 +127,15 @@ def main(args):
             player_time = player.get_time()
             print(f'{player_time=}')
 
-            if 65000 <= player_time and player_time < 90000:
+            if 63000 <= player_time and player_time < 131000:
                 OSC.send(target, "/rnbo/inst/0/params/sound_on/normalized", 1)
             else:
                 OSC.send(target, "/rnbo/inst/0/params/sound_on/normalized", 0)
 
-            if player_time > 98000:
+            if player_time > 139000:
 
                 player.pause()      # 일시정지 상태 유지
-                player.set_time(4000)  # 첫 프레임 위치로 이동
+                player.set_time(1000)  # 첫 프레임 위치로 이동
                 player.play()
                 time.sleep(0.1)  # 첫 프레임을 로드하기 위한 짧은 대기
                 player.pause()      # 일시정지 상태 유지
