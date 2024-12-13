@@ -2,6 +2,9 @@
 
 ## Hardware
 - Raspberry Pi Zero 2 W
+- ADC : MCP3008
+- ToF : Vl53l5CX
+- OLED : SSD1306
 
 ## Software
 - Host PC : Max 8.6.4 / RNBO 1.3.0
