@@ -2,6 +2,7 @@
 
 ## Hardware
 - Raspberry Pi Zero 2 W
+- DAC & AMP : MAX98357A [Install Guide](https://learn.adafruit.com/adafruit-max98357-i2s-class-d-mono-amp/raspberry-pi-usage)
 - ADC : MCP3008
 - ToF : Vl53l5CX
 - OLED : SSD1306
