@@ -12,7 +12,7 @@ printf "\
 After=network.target sound.target
 
 [Timer]
-OnBootSec=30s
+OnBootSec=3s
 
 [Service]
 Type=simple

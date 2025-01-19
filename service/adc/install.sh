@@ -9,7 +9,7 @@ mkdir $USER_SERVICE_DIR
 echo "Create service file : $SERVICE_NAME.service"
 printf "\
 [Timer]
-OnBootSec=30s
+OnBootSec=3s
 
 [Service]
 Type=simple
