@@ -48,6 +48,7 @@ def main(args):
             if not args.service:
                 print(f'{min_distance=}')
             OSC.send(target, "/rnbo/inst/0/params/ToF_num/normalized", min_distance/2000.0)
+            OSC.send(target, "/rnbo/inst/0/params/ToF_array/normalized", distance_masked.tolist())
             
         else:
             if not args.service:
