@@ -45,18 +45,13 @@ def main(args):
             distance_masked = distance * mask + 2000.0 * numpy.invert(mask)
 
             min_distance = distance_masked.min()
-            dist0 = (distance_masked[10] + distance_masked[11] + distance_masked[14] + distance_masked[15]) / 4.0
-            dist1 = (distance_masked[8] + distance_masked[9] + distance_masked[12] + distance_masked[13]) / 4.0
-            dist2 = (distance_masked[0] + distance_masked[1] + distance_masked[4] + distance_masked[5]) / 4.0
-            dist3 = (distance_masked[2] + distance_masked[3] + distance_masked[6] + distance_masked[7]) / 4.0
+
             if not args.service:
                 print(f'{min_distance=}')
                 print(f'{dist0=} {dist1=} {dist2=} {dist3=}')
             OSC.send(target, "/rnbo/inst/0/params/ToF_min/normalized", min_distance/2000.0)
-            OSC.send(target, "/rnbo/inst/0/params/ToF_0/normalized", dist0/2000.0)
-            OSC.send(target, "/rnbo/inst/0/params/ToF_1/normalized", dist1/2000.0)
-            OSC.send(target, "/rnbo/inst/0/params/ToF_2/normalized", dist2/2000.0)
-            OSC.send(target, "/rnbo/inst/0/params/ToF_3/normalized", dist3/2000.0)
+            for i in range(16):
+                OSC.send(target, f"/rnbo/inst/0/params/ToF_{i}/normalized", distance_masked[i]/2000.0)
             
         else:
             if not args.service:
