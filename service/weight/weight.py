@@ -1,8 +1,8 @@
-import sys, os, time, logging, argparse
-
-import RPi.GPIO as GPIO
+import sys
+import smbus
+import time
+import struct
 import liblo as OSC
-from hx711v0_5_1 import HX711
 
 
 def main(args):
@@ -17,20 +17,50 @@ def main(args):
     # start the transport via OSC
     OSC.send(target, "/rnbo/jack/transport/rolling", 1)
 
-    hx = HX711(douts=[6,12,13,26], pd_sck=5)
-    hx.autosetOffset()
 
-    while True:
-        weightValues = hx.getWeightFiltered()
 
-        if not args.service:
-            print(f"weight (grams): {weightValues}")
+    SLAVE_ADDRESS = 0x50
+    I2C_BUS = 1
 
-        for i, weightValue in enumerate(weightValues):
-            OSC.send(target, f"/rnbo/inst/0/params/weight{i}/normalized", weightValue)
+    bus = smbus.SMBus(I2C_BUS)
+    i = 0
 
-        time.sleep(0.5)
+    def request_and_receive_float(address, index):
+        try:
+            bus.write_byte(address, index)
+            time.sleep(0.05)
+            data = bus.read_i2c_block_data(address, 0, 4) # float 는 4바이트
+            float_value, = struct.unpack('<f', bytes(data))
+            return float_value
+        except Exception as e:
+            print(f"Error: {e}")
+            return None
 
+    try:
+        while True:
+                
+
+            weight0 = request_and_receive_float(SLAVE_ADDRESS, 0)
+            weight1 = request_and_receive_float(SLAVE_ADDRESS, 1)
+            weight2 = request_and_receive_float(SLAVE_ADDRESS, 2)
+            weight3 = request_and_receive_float(SLAVE_ADDRESS, 3)
+
+            # print(f"{weight0:.0f}, {weight1:.0f}, {weight2:.0f}, {weight3:.0f}")
+            if not args.service:
+                print(f"{weight0}")
+
+            OSC.send(target, "/rnbo/inst/0/params/weight0/normalized", weight0)
+            OSC.send(target, "/rnbo/inst/0/params/weight1/normalized", weight1)
+            OSC.send(target, "/rnbo/inst/0/params/weight2/normalized", weight2)
+            OSC.send(target, "/rnbo/inst/0/params/weight3/normalized", weight3)
+
+            time.sleep(0.250/4)
+
+
+    except KeyboardInterrupt:
+        print("Program terminated by user.")
+    finally:
+        bus.close()
 
 
 if __name__ == '__main__':
