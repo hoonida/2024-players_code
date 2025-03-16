@@ -1,4 +1,4 @@
-import sys
+import sys, os
 import smbus
 import time
 import struct
