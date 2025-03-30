@@ -85,7 +85,7 @@ def main(args):
                 "weight3": str(weight3),
             }
 
-            if loop_count % 50:
+            if loop_count % 50 == 0:
                 message = json.dumps(dict)
                 client.publish(topic, message)
                 if not args.service:
