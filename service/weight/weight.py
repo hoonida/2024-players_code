@@ -79,7 +79,7 @@ def main(args):
             OSC.send(target, "/rnbo/inst/0/params/weight2/normalized", weight2)
             OSC.send(target, "/rnbo/inst/0/params/weight3/normalized", weight3)
 
-            if loop_count % 50 == 0:
+            if loop_count % 30 == 0:
                 dict = {
                     "time": str(time.ctime()),
                     "max_sum_weight": str(max_sum_weight),
