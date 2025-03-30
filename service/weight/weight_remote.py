@@ -1,11 +1,12 @@
 import sys, os
+import argparse
 import paho.mqtt.client as mqtt
 import liblo as OSC
 import json
 import time
 
 
-def main():
+def main(args):
 
     # send all messages to port 1234 on the local machine
     try:
@@ -18,24 +19,25 @@ def main():
     OSC.send(target, "/rnbo/jack/transport/rolling", 1)
 
 
-
-
     # MQTT 브로커 설정
     broker_address = "broker.hivemq.com"  # 공개 MQTT 브로커
     port = 1883
     topic = "raspberry10/service/weight"
 
     def on_connect(client, userdata, flags, rc):
-        print("Connected with result code "+str(rc))
+        if not args.service:
+            print("Connected with result code "+str(rc))
         client.subscribe(topic)
 
     def on_message(client, userdata, msg):
-        print(msg.topic+" "+str(msg.payload.decode("utf-8")))
+        if not args.service:
+            print(msg.topic+" "+str(msg.payload.decode("utf-8")))
 
         dict = json.loads(msg.payload.decode("utf-8"))
         max_sum_weight = float(dict["max_sum_weight"])
 
-        print(f"{max_sum_weight=}")
+        if not args.service:
+            print(f"{max_sum_weight=}")
 
         OSC.send(target, "/rnbo/inst/0/params/weight_remote/normalized", max_sum_weight)
 
@@ -58,4 +60,14 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+
+    # Change the current working directory to the script directory
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    os.chdir(dir_path)
+
+    # Parse command line arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--service', action='store_true')
+    args = parser.parse_args()
+
+    main(args)
