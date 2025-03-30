@@ -9,3 +9,4 @@ pillow==9.1.0
 spidev
 Adafruit_GPIO
 Adafruit-SSD1306
+paho-mqtt
