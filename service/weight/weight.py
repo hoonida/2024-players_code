@@ -57,39 +57,38 @@ def main(args):
 
     try:
         loop_count = 0
+        max_sum_weight = 0
 
         while True:
 
             loop_count += 1
                 
-            weight0 = request_and_receive_float(SLAVE_ADDRESS, 0)
-            weight1 = request_and_receive_float(SLAVE_ADDRESS, 1)
-            weight2 = request_and_receive_float(SLAVE_ADDRESS, 2)
-            weight3 = request_and_receive_float(SLAVE_ADDRESS, 3)
+            weight0 = -request_and_receive_float(SLAVE_ADDRESS, 0)
+            weight1 = -request_and_receive_float(SLAVE_ADDRESS, 1)
+            weight2 = -request_and_receive_float(SLAVE_ADDRESS, 2)
+            weight3 = -request_and_receive_float(SLAVE_ADDRESS, 3)
+            weight_sum = weight0 + weight1 + weight2 + weight3
+            max_sum_weight = max(max_sum_weight, weight_sum)
 
             # print(f"{weight0:.0f}, {weight1:.0f}, {weight2:.0f}, {weight3:.0f}")
             if not args.service:
-                print(f"{weight0}")
+                print(f"{weight0} {weight1} {weight2} {weight3}")
 
             OSC.send(target, "/rnbo/inst/0/params/weight0/normalized", weight0)
             OSC.send(target, "/rnbo/inst/0/params/weight1/normalized", weight1)
             OSC.send(target, "/rnbo/inst/0/params/weight2/normalized", weight2)
             OSC.send(target, "/rnbo/inst/0/params/weight3/normalized", weight3)
 
-
-            dict = {
-                "time": str(time.ctime()),
-                "weight0": str(weight0),
-                "weight1": str(weight1),
-                "weight2": str(weight2),
-                "weight3": str(weight3),
-            }
-
             if loop_count % 50 == 0:
+                dict = {
+                    "time": str(time.ctime()),
+                    "max_sum_weight": str(max_sum_weight),
+                }
                 message = json.dumps(dict)
                 client.publish(topic, message)
                 if not args.service:
                     print("Published:", message)
+                max_sum_weight = 0
 
             time.sleep(0.250/4)
 
