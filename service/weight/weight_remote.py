@@ -37,7 +37,7 @@ def main(args):
         max_sum_weight = float(dict["max_sum_weight"])
 
         if not args.service:
-            print(f"{max_sum_weight=}")
+            print(f"OSC Send : {max_sum_weight/1000}")
 
         OSC.send(target, "/rnbo/inst/0/params/weight_remote/normalized", max_sum_weight / 1000) ## kg 단위로 전송
 
