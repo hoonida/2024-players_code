@@ -4,7 +4,8 @@ import smbus
 import time
 import struct
 import liblo as OSC
-
+import paho.mqtt.client as mqtt_client
+import json
 
 def main(args):
 
@@ -36,11 +37,31 @@ def main(args):
         except Exception as e:
             print(f"Error: {e}")
             return None
+        
+    # MQTT 브로커 설정
+    broker_address = "broker.hivemq.com"
+    port = 1883
+    topic = "raspberry10/service/weight"
+    device_id = "raspberry10"
+
+    def on_mqtt_connect(client, userdata, flags, rc):
+        print("Connection returned result: " + str(rc))
+        client.subscribe(topic)
+
+    client = mqtt_client.Client()
+    client.on_connect = on_mqtt_connect # Do the subscribe etc in the callback
+    client.connect(broker_address, port)
+    client.loop_start() # Start network loop in separate thread
+
+
 
     try:
-        while True:
-                
+        loop_count = 0
 
+        while True:
+
+            loop_count += 1
+                
             weight0 = request_and_receive_float(SLAVE_ADDRESS, 0)
             weight1 = request_and_receive_float(SLAVE_ADDRESS, 1)
             weight2 = request_and_receive_float(SLAVE_ADDRESS, 2)
@@ -54,6 +75,21 @@ def main(args):
             OSC.send(target, "/rnbo/inst/0/params/weight1/normalized", weight1)
             OSC.send(target, "/rnbo/inst/0/params/weight2/normalized", weight2)
             OSC.send(target, "/rnbo/inst/0/params/weight3/normalized", weight3)
+
+
+            dict = {
+                "time": str(time.ctime()),
+                "weight0": str(weight0),
+                "weight1": str(weight1),
+                "weight2": str(weight2),
+                "weight3": str(weight3),
+            }
+
+            if loop_count % 10:
+                message = json.dumps(dict)
+                client.publish(topic, message)
+                if not args.service:
+                    print("Published:", message)
 
             time.sleep(0.250/4)
 
