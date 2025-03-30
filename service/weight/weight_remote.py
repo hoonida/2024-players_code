@@ -39,7 +39,7 @@ def main(args):
         if not args.service:
             print(f"{max_sum_weight=}")
 
-        OSC.send(target, "/rnbo/inst/0/params/weight_remote/normalized", max_sum_weight / 10)
+        OSC.send(target, "/rnbo/inst/0/params/weight_remote/normalized", max_sum_weight / 1000) ## kg 단위로 전송
 
     client = mqtt.Client()
     client.on_connect = on_connect
