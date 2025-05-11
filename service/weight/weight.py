@@ -4,6 +4,7 @@ import smbus
 import time
 import struct
 import liblo as OSC
+import socket
 import paho.mqtt.client as mqtt_client
 import json
 
@@ -39,10 +40,10 @@ def main(args):
             return None
         
     # MQTT 브로커 설정
+    device_id = socket.gethostname()
     broker_address = "broker.hivemq.com"
     port = 1883
-    topic = "raspberry10/service/weight"
-    device_id = "raspberry10"
+    topic = f"{device_id}/service/weight"
 
     def on_mqtt_connect(client, userdata, flags, rc):
         print("Connection returned result: " + str(rc))
